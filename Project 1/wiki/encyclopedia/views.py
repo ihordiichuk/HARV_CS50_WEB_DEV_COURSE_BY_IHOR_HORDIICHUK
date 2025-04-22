@@ -18,3 +18,17 @@ def entry(request, title):
         "title": title,
         "content": html_content
     })
+
+def search(request):
+    query = request.GET.get("q")
+    entries = util.list_entries()
+    
+    if query.get_entry(query):
+        return redurect("entry", title=query)
+    else:
+        results = [entry for entry in entries if query.lower() in entry.lower()]
+        return render(request, "encyclopedia/search.html", {
+            "query": query,
+            "results": results
+        })
+        
