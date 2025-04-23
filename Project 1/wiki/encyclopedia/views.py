@@ -34,11 +34,11 @@ def search(request):
         })
         
 def new_page(request):
-    if request.nethod == "POST":
+    if request.method == "POST":
         title = request.POST.get("title")
         content = request.POST.get("content")
         
-        if util.get.entry(title):
+        if util.get_entry(title):
             return render(request, "encyclopedia/error.html", {
                 "message": f"A page with the title '{title}' already exists."
             })
@@ -47,3 +47,21 @@ def new_page(request):
         return redirect("entry", title=title)
     
     return render(request, "encyclopedia/new.html")
+
+def edit_page(request, title):
+    if request.method == "POST":
+        content = request.POST.get("content")
+        util.save_entry(title,content)
+        return redirect("entry", title=title)
+    
+    content = util.get_entry(title)
+    if content is None:
+        return render(request, "encyclopedia/error.html", {
+            "message": "Page not found!"
+        })
+        
+    return render(request, "encyclopedia/edit.html", {
+        "title": title,
+        "content": content
+    })
+    
