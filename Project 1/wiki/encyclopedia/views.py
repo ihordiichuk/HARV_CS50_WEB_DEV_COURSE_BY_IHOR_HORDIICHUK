@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 from . import util
 import markdown2
 
@@ -23,8 +24,8 @@ def search(request):
     query = request.GET.get("q")
     entries = util.list_entries()
     
-    if query.get_entry(query):
-        return redurect("entry", title=query)
+    if util.get_entry(query):
+        return redirect("entry", title=query)
     else:
         results = [entry for entry in entries if query.lower() in entry.lower()]
         return render(request, "encyclopedia/search.html", {
@@ -32,3 +33,17 @@ def search(request):
             "results": results
         })
         
+def new_page(request):
+    if request.nethod == "POST":
+        title = request.POST.get("title")
+        content = request.POST.get("content")
+        
+        if util.get.entry(title):
+            return render(request, "encyclopedia/error.html", {
+                "message": f"A page with the title '{title}' already exists."
+            })
+            
+        util.save_entry(title, content)
+        return redirect("entry", title=title)
+    
+    return render(request, "encyclopedia/new.html")
