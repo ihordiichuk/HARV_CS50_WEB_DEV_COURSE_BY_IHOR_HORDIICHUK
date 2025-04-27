@@ -17,7 +17,9 @@
             {% endif %}
 
             {% if user.is_authenticated%}
-                <p> Welcome, {{ user.username}}! <a href="{% url 'logout' %}">Log out</a></p>
+                <p> Welcome, {{ user.username}}!
+                <a href="{% url 'create_listing' %}">Create Listing</a> 
+                <a href="{% url 'logout' %}">Log out</a></p>
             {% else %}
                 <p><a href="{% url 'login' %}">Log in</a> | <a href="{% url 'register' %}">register</a></p>
             {% endif %}
