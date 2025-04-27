@@ -1,4 +1,4 @@
-{% extends "auctions/layout.html %}
+{% extends "auctions/layout.html" %}
 
 {% block body %}
 
@@ -11,8 +11,9 @@
     <form action="{% url 'register' %}" method="post">
         {% csrf_token %}
         <input type="text" name="username" placeholder="Username" required><br>
-        <input type="password" name="password" placeholder="Password" required><br>
         <input type="email" name="email" placeholder="Email" required><br>
+        <input type="password" name="password" placeholder="Password" required><br>
+        <input type="password" name="confirmation" placeholder="Confirm Password" required><br>
         <input type="submit" value="Register">
     </form>
 
