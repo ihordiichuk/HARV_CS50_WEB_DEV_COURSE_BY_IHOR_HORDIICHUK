@@ -15,6 +15,12 @@
             {% else %}
                 Not signed in.
             {% endif %}
+
+            {% if user.is_authenticated%}
+                <p> Welcome, {{ user.username}}! <a href="{% url 'logout' %}">Log out</a></p>
+            {% else %}
+                <p><a href="{% url 'login' %}">Log in</a> | <a href="{% url 'register' %}">register</a></p>
+            {% endif %}
         </div>
         <ul class="nav">
             <li class="nav-item">
