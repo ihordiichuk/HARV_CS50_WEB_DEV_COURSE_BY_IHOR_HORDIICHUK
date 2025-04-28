@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html %}
+
+{% block body %}
+    <h2>{{ listing.title }}</h2>
+
+    {% if listing.image_url %}
+        <img src="{{ listing.image_url }}" alt="{{ listing.title }}" width="300">
+    {% endif %}
+
+    <p><strong>Description:</strong> {{ listing.description }}</p>
+    <p><strong>Starting Bid:</strong> {{ listing.starting_bid }}</p>
+    <p><strong>Category:</strong> {{ listing.category }}</p>
+    <p><strong>Owner:</strong> {{ listing.owner.username }}</p>
+
+    <a href="{$ url 'index' $}"> Back to Listing</a>
+{% endblock %}

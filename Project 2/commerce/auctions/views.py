@@ -5,6 +5,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from .models import User
 from .models import Listing
@@ -85,3 +86,11 @@ def create_listing(request):
     return render(request, "auctions/create_listing.html", {
         "form": form
     })
+    
+def listing_page(request, listing_id):
+    listing = get_object_or_404(Listing, pk=listing_id)
+    
+    return render(request, "auctions/listing.html", {
+        "listing": listing
+    })
+

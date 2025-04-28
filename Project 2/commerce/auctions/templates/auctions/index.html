@@ -5,11 +5,18 @@
 
     <div>
         {% for listing in listings %}
-            <div style="border: 1px solid #ccc; padding: 10 px; margin-bottom: 10px;">
+            <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+
                 {% if listing.image_url %}
                     <img src="{{ listing.image_url }}" alt="{{ listing.title }}" width="200">
                 {% endif %}
-                <h3>{{ listing.title }}</h3>
+
+                <h3>
+                    <a href="{% url 'listing_page' listing.id %}">
+                        {{ listing.title }}
+                    </a>
+                </h3>
+
                 <p>{{ listing.description }}</p>
                 <p><strong>Starting Bid:</strong> ${{ listing.starting_bid }}</p>
             </div>
