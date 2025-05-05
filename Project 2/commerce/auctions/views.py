@@ -1,16 +1,14 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
-from django.shortcuts import render, redirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from .models import User
-from .models import Listing
-from .forms import ListingForm
 
+from .forms import ListingForm
+from .models import Bid, Listing, User
 
 
 def index(request):
@@ -89,8 +87,24 @@ def create_listing(request):
     
 def listing_page(request, listing_id):
     listing = get_object_or_404(Listing, pk=listing_id)
+    message = None
+    
+    if request.method == "POST":
+        try:
+            new_bid = float(request.POST["bid"])
+        except ValueError:
+            message = "Invalid bid format."
+        else:
+            current_price = listing.bigs.order_by("-amount").first()
+            minimum = current_price.amount if current_price else listing.starting_bid
+            if new_bid > minimum:
+                Bid.objects.create(user=request.user, listing=listing, amount=new_bid)
+                message = "Your bid was placed successfully."
+            else:
+                message = "Your bid must be higher than the current price."
     
     return render(request, "auctions/listing.html", {
-        "listing": listing
+        "listing": listing,
+        "message": message
     })
 
