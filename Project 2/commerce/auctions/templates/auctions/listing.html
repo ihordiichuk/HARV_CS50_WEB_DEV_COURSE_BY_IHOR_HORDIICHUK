@@ -1,6 +1,4 @@
-{% extends "auctions/layout.html" %} {% block body %} {% if message %}
-<p style="color: green">{{ message }}</p>
-{% endif %}
+{% extends "auctions/layout.html" %} {% block body %}
 
 <h2>{{ listing.title }}</h2>
 
@@ -14,4 +12,20 @@
 <p><strong>Owner:</strong> {{ listing.owner.username }}</p>
 
 <a href="{% url 'index' %}">Back to Listings</a>
+
+{% if user.is_authenticated %}
+<form action="{% url 'listing' listing.id %}" method="post">
+  {% csrf_token %}
+  <input type="number" name="bid" step="0.01" placeholder="Your Bid" required />
+  <input type="submit" value="Place Bid" />
+</form>
+
+{% if messages %} {% for message in messages %}
+<p
+  style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %};"
+>
+  {{ message }}
+</p>
+{% endfor %} {% endif %} {% else %}
+<p><a href="{% url 'login' %}">Log in</a> to place a bid.</p>
 {% endblock %}

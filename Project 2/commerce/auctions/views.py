@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -87,24 +89,21 @@ def create_listing(request):
     
 def listing_page(request, listing_id):
     listing = get_object_or_404(Listing, pk=listing_id)
-    message = None
-    
+
     if request.method == "POST":
         try:
             new_bid = float(request.POST["bid"])
         except ValueError:
-            message = "Invalid bid format."
+            messages.error(request, "Invalid bid format.")
         else:
-            current_price = listing.bigs.order_by("-amount").first()
+            current_price = listing.bids.order_by("-amount").first()
             minimum = current_price.amount if current_price else listing.starting_bid
             if new_bid > minimum:
                 Bid.objects.create(user=request.user, listing=listing, amount=new_bid)
-                message = "Your bid was placed successfully."
+                messages.success(request, "Your bid was placed successfully.")
             else:
-                message = "Your bid must be higher than the current price."
-    
-    return render(request, "auctions/listing.html", {
-        "listing": listing,
-        "message": message
-    })
+                messages.error(request, "Your bid must be higher than the current price.")
 
+    return render(request, "auctions/listing.html", {
+        "listing": listing
+    })
