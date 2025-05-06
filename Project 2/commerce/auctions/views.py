@@ -107,3 +107,22 @@ def listing_page(request, listing_id):
     return render(request, "auctions/listing.html", {
         "listing": listing
     })
+    
+def toggle_watchlist(request, listing_id):
+    listing = get_object_or_404(Listing, pk=listing_id)
+    
+    if request.user.is_authenticated:
+        if request.user in listing.watchlist.all():
+            listing.watchlist.add(request.user)
+            
+    return redirect("listing_page", listing_id=listing_id)
+
+def watchlist_view(request):
+    if request.user.is_authenticated:
+        listings = request.user.watchlist.all()
+        return render(request, "auctions/watchlist.html", {
+            "listings": listings
+        })
+    else:
+        return redirect("login")
+    

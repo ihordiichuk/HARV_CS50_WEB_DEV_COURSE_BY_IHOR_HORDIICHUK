@@ -1,4 +1,5 @@
 from django.urls import path
+
 from . import views
 
 urlpatterns = [
@@ -8,4 +9,6 @@ urlpatterns = [
     path("logout", views.logout_view, name="logout"),
     path("create", views.create_listing, name="create_listing"),
     path("listing/<int:listing_id>", views.listing_page, name="listing_page"),
+    path("watchlist", views.watchlist_view, name="watchlist"),
+    path("watchlist/<int:listing_id>/toggle", views.toggle_watchlist, name="toggle_watchlist"),
 ]

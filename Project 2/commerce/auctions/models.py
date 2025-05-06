@@ -15,6 +15,7 @@ class Listing(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='listings')
     is_active = models.BooleanField(default=True)
+    watchlist = models.ManyToManyField(User, related_name='watchlist', blank=True)
     
     def current_price(self):
         highest = self.bids.order_by("-amount").first()
@@ -25,14 +26,14 @@ class Listing(models.Model):
         return highest_bid.user if highest_bid else None
     
     def __str__(self):
-        return f"{self.title} bid ${self.amount} on {self.starting_bid}"
+        return f"{self.title} | Starting Bid: ${self.starting_bid}"
     
 class Bid(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bids_as_owner")
     listing = models.ForeignKey('Listing', on_delete=models.CASCADE, related_name='bids')
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     timestamp = models.DateTimeField(auto_now_add=True)
-    bidder = models.ForeignKey(User, on_delete=models.CASCADE)
+    # bidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bids_as_bidder")
 
 
 
