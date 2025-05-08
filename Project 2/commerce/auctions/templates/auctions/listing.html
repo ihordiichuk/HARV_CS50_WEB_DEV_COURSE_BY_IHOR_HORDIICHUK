@@ -20,17 +20,14 @@
   <input type="submit" value="Place Bid" />
 </form>
 
-< form action="{% url 'toggle_watchlist' listing.id %}" method="post">
-{% csrf_token %}
-{% if user in listing.watchlist.all %}
-<button type="submit"> Remove from Watchlist</button>
-{% else %}
-<button type="submit">Add to Watchlist</button>
-{% endif %}
+<form action="{% url 'toggle_watchlist' listing.id %}" method="post">
+  {% csrf_token %} {% if user in listing.watchlist.all %}
+  <button type="submit">Remove from Watchlist</button>
+  {% else %}
+  <button type="submit">Add to Watchlist</button>
+  {% endif %}
 </form>
-{% endif %}
-
-{% if messages %} {% for message in messages %}
+{% endif %} {% if messages %} {% for message in messages %}
 <p
   style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %};"
 >
