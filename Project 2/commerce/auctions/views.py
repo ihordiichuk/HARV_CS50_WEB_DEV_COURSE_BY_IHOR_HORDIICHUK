@@ -5,7 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import (HttpResponse, HttpResponseForbidden,
+                         HttpResponseRedirect)
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
@@ -86,6 +87,17 @@ def create_listing(request):
     return render(request, "auctions/create_listing.html", {
         "form": form
     })
+    
+@login_required
+def close_listing(request, listing_id):
+    listing = get_object_or_404(Listing, pk=listing_id)
+    
+    if request.user != listing.owner:
+        return HttpResponseForbidden("Only the owner can close the listing.")
+    
+    listing.is_active = False
+    listing.save()
+    return redirect("listing_page", listing_id=listing.id)
     
 def listing_page(request, listing_id):
     listing = get_object_or_404(Listing, pk=listing_id)

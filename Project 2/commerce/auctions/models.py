@@ -22,8 +22,8 @@ class Listing(models.Model):
         return highest.amount if highest else self.starting_bid
 
     def winner(self):
-        highest_bid = self.bids.order_by('-amount').first()
-        return highest_bid.user if highest_bid else None
+        highest = self.bids.order_by('-amount').first()
+        return highest.user if highest else None
     
     def __str__(self):
         return f"{self.title} | Starting Bid: ${self.starting_bid}"

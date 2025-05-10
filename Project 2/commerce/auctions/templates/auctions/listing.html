@@ -27,7 +27,21 @@
   <button type="submit">Add to Watchlist</button>
   {% endif %}
 </form>
-{% endif %} {% if messages %} {% for message in messages %}
+
+{% if user == listing.owner and listing.is_active %}
+<form action="{% url 'close_listing' listing.id %}" method="post">
+  {% csrf_token %}
+  <button type="submit">Close Auction</button>
+</form>
+{% endif %} {% if not listing.is_active %}
+<p><strong>This auction is closed.</strong></p>
+
+{% if listing.winner %}
+<p><strong>Winner:</strong> {{ listing.winner.username }}</p>
+<p><strong>Final Price:</strong> ${{ listing.current_price|floatformat:2 }}</p>
+{% else %}
+<p><em>No bids were placed on this listing.</em></p>
+{% endif %} {% endif %} {% if messages %} {% for message in messages %}
 <p
   style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %};"
 >
