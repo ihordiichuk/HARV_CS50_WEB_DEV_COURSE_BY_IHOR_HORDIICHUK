@@ -138,3 +138,14 @@ def watchlist_view(request):
     else:
         return redirect("login")
     
+def categories(request):
+    categories = Listing.CATEGORY_CHOICES
+    return render(request, "auctions/categories.html", {
+        "categories": categories
+    })
+def category_listings(request, category_name):
+    listings = Listing.objects.filter(category=category_name, is_active=True)
+    return render(request, "auctions/category_listings.html", {
+        "listings": listings,
+        "category_name": category_name
+    })

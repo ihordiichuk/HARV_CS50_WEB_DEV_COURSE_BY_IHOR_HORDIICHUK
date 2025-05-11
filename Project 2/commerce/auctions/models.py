@@ -6,12 +6,22 @@ from django.db import models
 class User(AbstractUser):
     pass
 class Listing(models.Model):
+    CATEGORY_CHOICES = [
+        ("Electronics", "Electronics"),
+        ("Fashion", "Fashion"),
+        ("Books", "Books"),
+        ("Toys", "Toys"),
+        ("Home", "Home"),
+        ("Other", "Other"),
+    ]
+    
     title = models.CharField(max_length=64)
     description = models.TextField()
     starting_bid = models.DecimalField(max_digits=10, decimal_places=2)
     current_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     image_url = models.URLField(blank=True, null=True)
-    category = models.CharField(max_length=64, blank=True, null=True)
+    category = models.CharField(max_length=32, choices=CATEGORY_CHOICES, default="Other")
+    # category = models.CharField(max_length=64, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='listings')
     is_active = models.BooleanField(default=True)

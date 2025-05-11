@@ -1,5 +1,7 @@
 from django import forms
+
 from .models import Listing
+
 
 class ListingForm(forms.ModelForm):
     class Meta:
@@ -8,5 +10,5 @@ class ListingForm(forms.ModelForm):
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),
             'image_url': forms.URLInput(attrs={'placeholder': 'Optional'}),
-            'category': forms.TextInput(attrs={'placeholder': 'Optional'}),
+            # 'category': forms.TextInput(attrs={'placeholder': 'Optional'}),
         }

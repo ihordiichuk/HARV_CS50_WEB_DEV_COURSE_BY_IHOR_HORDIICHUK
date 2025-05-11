@@ -1,11 +1,46 @@
-{% extends "auctions/layout.html" %}
+{% extends "auctions/layout.html" %} {% block body %}
+<h2>Create New Listing</h2>
 
-{% block body %}
-    <h2> Create New Listing </h2>
+<form action="{% url 'create_listing' %}" method="post">
+  {% csrf_token %}
 
-    <form action="{% url 'create_listing' %}" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Create Listing">
-    </form>
-{% endblock body %}
+  <p>
+    <label for="id_title"><strong>Title:</strong></label
+    ><br />
+    {{ form.title }}
+  </p>
+
+  <p>
+    <label for="id_description"><strong>Description:</strong></label
+    ><br />
+    {{ form.description }}
+  </p>
+
+  <p>
+    <label for="id_starting_bid"><strong>Starting Bid ($):</strong></label
+    ><br />
+    {{ form.starting_bid }}
+  </p>
+
+  <p>
+    <label for="id_image_url"><strong>Image URL:</strong></label
+    ><br />
+    {{ form.image_url }}
+  </p>
+
+  <p>
+    <label for="id_category"><strong>Category:</strong></label
+    ><br />
+    {{ form.category }}
+  </p>
+
+  <button type="submit">Create Listing</button>
+</form>
+
+{% if form.errors %}
+<ul style="color: red">
+  {% for field in form %} {% for error in field.errors %}
+  <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+  {% endfor %} {% endfor %}
+</ul>
+{% endif %} {% endblock %}
