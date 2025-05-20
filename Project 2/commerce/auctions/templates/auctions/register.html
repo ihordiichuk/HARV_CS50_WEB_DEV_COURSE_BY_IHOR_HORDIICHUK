@@ -2,21 +2,40 @@
 
 {% block body %}
 
-    <h2>Register</h2>
+<!-- Page heading -->
+<h2>Register</h2>
 
-    {% if message %}
-        <div style="color: red;">{{ message }}</div>
-    {% endif %}
+<!-- Display an error or informational message if one exists -->
+{% if message %}
+  <div style="color: red;">
+    {{ message }}
+  </div>
+{% endif %}
 
-    <form action="{% url 'register' %}" method="post">
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="Username" required><br>
-        <input type="email" name="email" placeholder="Email" required><br>
-        <input type="password" name="password" placeholder="Password" required><br>
-        <input type="password" name="confirmation" placeholder="Confirm Password" required><br>
-        <input type="submit" value="Register">
-    </form>
+<!-- Registration form -->
+<form action="{% url 'register' %}" method="post">
+  {% csrf_token %}
 
-    <p> Already have an account? <a href="{% url 'login' %}">Login here.</a></p>
+  <!-- Username input field -->
+  <input type="text" name="username" placeholder="Username" required><br>
+
+  <!-- Email input field -->
+  <input type="email" name="email" placeholder="Email" required><br>
+
+  <!-- Password input field -->
+  <input type="password" name="password" placeholder="Password" required><br>
+
+  <!-- Password confirmation field -->
+  <input type="password" name="confirmation" placeholder="Confirm Password" required><br>
+
+  <!-- Submit button -->
+  <input type="submit" value="Register">
+</form>
+
+<!-- Link to login page for existing users -->
+<p>
+  Already have an account?
+  <a href="{% url 'login' %}">Login here.</a>
+</p>
 
 {% endblock %}

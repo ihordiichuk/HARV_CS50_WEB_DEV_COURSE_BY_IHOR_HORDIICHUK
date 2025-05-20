@@ -1,8 +1,19 @@
-{% extends "auctions/layout.html" %} {% block body %}
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<!-- Page title -->
 <h2>Categories</h2>
+
+<!-- Unordered list of all category choices -->
 <ul>
+  <!-- Loop through the list of (key, label) category pairs -->
   {% for key, label in categories %}
-  <li><a href="{% url 'category_listings' key %}">{{ label }}</a></li>
+    <!-- Each category links to a page showing listings under that category -->
+    <li>
+      <a href="{% url 'category_listings' key %}">{{ label }}</a>
+    </li>
   {% endfor %}
 </ul>
+
 {% endblock %}

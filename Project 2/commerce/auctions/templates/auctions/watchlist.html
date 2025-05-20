@@ -1,11 +1,33 @@
-{% extends "auctions/layout.html" %} {% block body %}
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<!-- Page title -->
 <h2>Your Watchlist</h2>
+
+<!-- Loop through all listings in the user's watchlist -->
 {% for listing in listings %}
-<div>
-  <a href="{% url 'listing_page' listing.id %}">{{ listing.title }}</a>
-  <p>{{ listing.description }}</p>
-  <img src="{{ listing.image_url }}" style="max-height: 200px" />
-</div>
+
+  <div style="margin-bottom: 20px; border: 1px solid #ccc; padding: 10px;">
+
+    <!-- Clickable title that links to the listing detail page -->
+    <a href="{% url 'listing_page' listing.id %}">
+      <strong>{{ listing.title }}</strong>
+    </a>
+
+    <!-- Short description of the listing -->
+    <p>{{ listing.description }}</p>
+
+    <!-- Display image if available -->
+    {% if listing.image_url %}
+      <img src="{{ listing.image_url }}" alt="{{ listing.title }}" style="max-height: 200px;" />
+    {% endif %}
+
+  </div>
+
+<!-- Message shown if the watchlist is empty -->
 {% empty %}
-<p>Your watchlist is empty.</p>
-{% endfor %} {% endblock %}
+  <p>Your watchlist is empty.</p>
+{% endfor %}
+
+{% endblock %}

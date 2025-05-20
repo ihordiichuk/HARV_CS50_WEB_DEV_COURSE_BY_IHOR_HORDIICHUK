@@ -1,52 +1,100 @@
-{% extends "auctions/layout.html" %} {% block body %}
+{% extends "auctions/layout.html" %}
 
+{% block body %}
+
+<!-- Display title and image if available -->
 <h2>{{ listing.title }}</h2>
 
 {% if listing.image_url %}
 <img src="{{ listing.image_url }}" alt="{{ listing.title }}" width="300" />
 {% endif %}
 
+<!-- Show listing description, starting bid, category, and owner -->
 <p><strong>Description:</strong> {{ listing.description }}</p>
 <p><strong>Starting Bid:</strong> {{ listing.starting_bid|floatformat:2 }}</p>
 <p><strong>Category:</strong> {{ listing.category }}</p>
 <p><strong>Owner:</strong> {{ listing.owner.username }}</p>
 
+<!-- Link to go back to the index page -->
 <a href="{% url 'index' %}">Back to Listings</a>
 
+<!-- Show bidding and watchlist forms only if the user is logged in -->
 {% if user.is_authenticated %}
-<form action="{% url 'listing' listing.id %}" method="post">
-  {% csrf_token %}
-  <input type="number" name="bid" step="0.01" placeholder="Your Bid" required />
-  <input type="submit" value="Place Bid" />
-</form>
 
-<form action="{% url 'toggle_watchlist' listing.id %}" method="post">
-  {% csrf_token %} {% if user in listing.watchlist.all %}
-  <button type="submit">Remove from Watchlist</button>
-  {% else %}
-  <button type="submit">Add to Watchlist</button>
+  <!-- Form for placing a new bid -->
+  <form action="{% url 'listing' listing.id %}" method="post">
+    {% csrf_token %}
+    <input type="number" name="bid" step="0.01" placeholder="Your Bid" required />
+    <input type="submit" value="Place Bid" />
+  </form>
+
+  <!-- Button to add or remove from the watchlist -->
+  <form action="{% url 'toggle_watchlist' listing.id %}" method="post">
+    {% csrf_token %}
+    {% if user in listing.watchlist.all %}
+      <button type="submit">Remove from Watchlist</button>
+    {% else %}
+      <button type="submit">Add to Watchlist</button>
+    {% endif %}
+  </form>
+
+  <!-- Show 'Close Auction' button only to the owner when listing is active -->
+  {% if user == listing.owner and listing.is_active %}
+    <form action="{% url 'close_listing' listing.id %}" method="post">
+      {% csrf_token %}
+      <button type="submit">Close Auction</button>
+    </form>
   {% endif %}
-</form>
 
-{% if user == listing.owner and listing.is_active %}
-<form action="{% url 'close_listing' listing.id %}" method="post">
-  {% csrf_token %}
-  <button type="submit">Close Auction</button>
-</form>
-{% endif %} {% if not listing.is_active %}
-<p><strong>This auction is closed.</strong></p>
+{% endif %}
 
-{% if listing.winner %}
-<p><strong>Winner:</strong> {{ listing.winner.username }}</p>
-<p><strong>Final Price:</strong> ${{ listing.current_price|floatformat:2 }}</p>
+<!-- If the auction is closed, show status, winner, and final price -->
+{% if not listing.is_active %}
+  <p><strong>This auction is closed.</strong></p>
+
+  {% if listing.winner %}
+    <p><strong>Winner:</strong> {{ listing.winner.username }}</p>
+    <p><strong>Final Price:</strong> ${{ listing.current_price|floatformat:2 }}</p>
+  {% else %}
+    <p><em>No bids were placed on this listing.</em></p>
+  {% endif %}
+{% endif %}
+
+<!-- Show bid history if bids are available -->
+{% if bids %}
+  <h3>Bid History</h3>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Bidder</th>
+        <th>Amount</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for bid in bids %}
+      <tr>
+        <td>{{ bid.user.username }}</td>
+        <td>${{ bid.amount|floatformat:2 }}</td>
+        <td>{{ bid.timestamp|date:"Y-m-d H:i" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% else %}
-<p><em>No bids were placed on this listing.</em></p>
-{% endif %} {% endif %} {% if messages %} {% for message in messages %}
-<p
-  style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %};"
->
-  {{ message }}
-</p>
-{% endfor %} {% endif %} {% else %}
+  <p><em>No bids yet.</em></p>
+{% endif %}
+
+<!-- Display any system messages such as errors or success notices -->
+{% if messages %}
+  {% for message in messages %}
+    <p style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %};">
+      {{ message }}
+    </p>
+  {% endfor %}
+{% endif %}
+
+<!-- If the user is not logged in, show login prompt -->
+{% else %}
 <p><a href="{% url 'login' %}">Log in</a> to place a bid.</p>
 {% endblock %}

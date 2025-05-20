@@ -2,19 +2,34 @@
 
 {% block body %}
 
-    <h2>Login</h2>
+<!-- Page heading -->
+<h2>Login</h2>
 
-    {% if message %}
-        <div style="color: red;">{{ message }}</div>
-    {% endif %}
+<!-- Show error message if login failed -->
+{% if message %}
+  <div style="color: red;">
+    {{ message }}
+  </div>
+{% endif %}
 
-    <form action="{% url 'login' %}" method="post">
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="Username" required><br>
-        <input type="password" name="password" placeholder="Password" required><br>
-        <input type="submit" value="Login">
-    </form>
+<!-- Login form: posts username and password -->
+<form action="{% url 'login' %}" method="post">
+  {% csrf_token %}
 
-    <p> Don't have an account? <a href="{% url 'register' %}">Register here.</a></p>
+  <!-- Username input -->
+  <input type="text" name="username" placeholder="Username" required><br>
+
+  <!-- Password input -->
+  <input type="password" name="password" placeholder="Password" required><br>
+
+  <!-- Submit button -->
+  <input type="submit" value="Login">
+</form>
+
+<!-- Link to registration page if user doesn't have an account -->
+<p>
+  Don't have an account?
+  <a href="{% url 'register' %}">Register here.</a>
+</p>
 
 {% endblock %}

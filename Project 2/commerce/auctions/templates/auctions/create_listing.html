@@ -1,46 +1,57 @@
-{% extends "auctions/layout.html" %} {% block body %}
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<!-- Heading for the page -->
 <h2>Create New Listing</h2>
 
+<!-- Form for creating a new listing -->
 <form action="{% url 'create_listing' %}" method="post">
   {% csrf_token %}
 
+  <!-- Title input field -->
   <p>
-    <label for="id_title"><strong>Title:</strong></label
-    ><br />
+    <label for="id_title"><strong>Title:</strong></label><br />
     {{ form.title }}
   </p>
 
+  <!-- Description input field (textarea) -->
   <p>
-    <label for="id_description"><strong>Description:</strong></label
-    ><br />
+    <label for="id_description"><strong>Description:</strong></label><br />
     {{ form.description }}
   </p>
 
+  <!-- Starting bid input (number) -->
   <p>
-    <label for="id_starting_bid"><strong>Starting Bid ($):</strong></label
-    ><br />
+    <label for="id_starting_bid"><strong>Starting Bid ($):</strong></label><br />
     {{ form.starting_bid }}
   </p>
 
+  <!-- Optional image URL field -->
   <p>
-    <label for="id_image_url"><strong>Image URL:</strong></label
-    ><br />
+    <label for="id_image_url"><strong>Image URL:</strong></label><br />
     {{ form.image_url }}
   </p>
 
+  <!-- Optional category input or dropdown -->
   <p>
-    <label for="id_category"><strong>Category:</strong></label
-    ><br />
+    <label for="id_category"><strong>Category:</strong></label><br />
     {{ form.category }}
   </p>
 
+  <!-- Submit button to create the listing -->
   <button type="submit">Create Listing</button>
 </form>
 
+<!-- Error messages if form validation fails -->
 {% if form.errors %}
-<ul style="color: red">
-  {% for field in form %} {% for error in field.errors %}
-  <li><strong>{{ field.label }}:</strong> {{ error }}</li>
-  {% endfor %} {% endfor %}
-</ul>
-{% endif %} {% endblock %}
+  <ul style="color: red">
+    {% for field in form %}
+      {% for error in field.errors %}
+        <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+      {% endfor %}
+    {% endfor %}
+  </ul>
+{% endif %}
+
+{% endblock %}

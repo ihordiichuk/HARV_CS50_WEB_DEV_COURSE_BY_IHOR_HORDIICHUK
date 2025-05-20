@@ -103,6 +103,12 @@ def listing_page(request, listing_id):
     listing = get_object_or_404(Listing, pk=listing_id)
 
     if request.method == "POST":
+        if not listing.is_active:
+            messages.error(request, "This auction is closed.")
+            return redirect("listing_page", listing_id=listing.id)
+        if not request.user.is_authenticated:
+            messages.error(request, "You must be logged in to place a bid.")
+            return redirect("login")
         try:
             new_bid = float(request.POST["bid"])
         except ValueError:
@@ -115,10 +121,15 @@ def listing_page(request, listing_id):
                 messages.success(request, "Your bid was placed successfully.")
             else:
                 messages.error(request, "Your bid must be higher than the current price.")
+        
+        bids = listing.bids.order_by('-timestamp')  # Нові спочатку
 
     return render(request, "auctions/listing.html", {
-        "listing": listing
-    })
+    "listing": listing,
+    "bids": bids,
+    "highest_bid": highest_bid,
+    "is_owner": is_owner
+})
     
 def toggle_watchlist(request, listing_id):
     listing = get_object_or_404(Listing, pk=listing_id)
