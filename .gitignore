@@ -1,4 +1,153 @@
-# macOS system files
+#################################################
+# DJANGO FRAMEWORK
+#################################################
+
+# SQLite database
+*.sqlite3
+db.sqlite3
+
+# Django migrations
+**/migrations/
+!**/migrations/__init__.py
+
+# Media and static files
+media/
+static/
+staticfiles/
+
+# Local settings and secrets
+.env
+.env.*
+*.env
+local_settings.py
+secrets.*
+config.*
+
+# Logs
+*.log
+
+#################################################
+# PYTHON
+#################################################
+
+*.py[cod]
+__pycache__/
+*.pyo
+*.pyd
+*$py.class
+
+# Packaging
+*.egg
+*.egg-info/
+.eggs/
+build/
+dist/
+MANIFEST
+
+# Virtual environments
+env/
+ENV/
+venv/
+.venv/
+.ENV/
+
+# Pipenv and Poetry
+Pipfile.lock
+poetry.lock
+
+# PyInstaller
+*.spec
+
+#################################################
+# TESTING AND COVERAGE
+#################################################
+
+.coverage
+.cache/
+.tox/
+.nox/
+.pytest_cache/
+htmlcov/
+junit.xml
+nosetests.xml
+test-output/
+.sh
+
+#################################################
+# IDEs AND EDITORS
+#################################################
+
+# VSCode
+.vscode/
+.history/
+
+# PyCharm and other JetBrains IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Eclipse
+.project
+.classpath
+.settings/
+.loadpath
+
+# NetBeans
+nbproject/private/
+
+#################################################
+# FRONTEND TOOLS
+#################################################
+
+node_modules/
+bower_components/
+jspm_packages/
+.pnp.*
+.pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+npm-debug.log*
+package-lock.json
+
+# Build artifacts
+build/
+dist/
+out/
+coverage/
+public/
+
+# Bundlers cache
+.cache/
+*.tsbuildinfo
+
+#################################################
+# ARCHIVES AND BINARIES
+#################################################
+
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.tgz
+*.bak
+*.tmp
+*.swp
+*.old
+
+#################################################
+# OPERATING SYSTEM FILES
+#################################################
+
+# macOS
 .DS_Store
 .AppleDouble
 .LSOverride
@@ -6,62 +155,38 @@ Icon?
 ._*
 .Spotlight-V100
 .Trashes
-.idea/
-.vscode/
 
-# Python cache and compiled files
-__pycache__/
-*.py[cod]
-*$py.class
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
 
-# Django specific
-*.log
-*.pot
-*.pyc
-*.pyo
-*.db
-*.sqlite3
-*.sqlite
-db.sqlite3
-
-# Pipenv / Poetry / venv
-env/
-venv/
-ENV/
-*.env
-*.venv
-*.egg-info/
-
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints
-
-# Archives and backups
-*.zip
-*.tar.gz
-*.tar
-*.rar
-*.7z
-*.bak
-*.swp
+# Linux
 *~
+.nfs*
 
-# Node modules (if using frontend tools)
-node_modules/
+#################################################
+# SECURITY AND CERTIFICATES
+#################################################
 
-# Coverage and test results
-htmlcov/
-coverage.xml
-.cache/
-.tox/
-.pytest_cache/
+*.pem
+*.crt
+*.key
+*.p12
+*.jks
 
-# Build / dist
-build/
-dist/
-*.egg
-.eggs/
-MANIFEST
+#################################################
+# VERSION CONTROL CONFLICTS
+#################################################
 
-# VSCode
-.vscode/
-.history/
+*.orig
+*.rej
+*.patch
+*.diff
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
+*.goutputstream-*
