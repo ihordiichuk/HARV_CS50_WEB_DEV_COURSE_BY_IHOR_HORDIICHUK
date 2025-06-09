@@ -4,6 +4,7 @@
 {% block body %}
     <h2>{{ request.user.email }}</h2>
 
+    <!-- Navigation Buttons -->
     <button class="btn btn-sm btn-outline-primary" id="inbox">Inbox</button>
     <button class="btn btn-sm btn-outline-primary" id="compose">Compose</button>
     <button class="btn btn-sm btn-outline-primary" id="sent">Sent</button>
@@ -11,41 +12,40 @@
     <a class="btn btn-sm btn-outline-primary" href="{% url 'logout' %}">Log Out</a>
     <hr>
 
+    <!-- Views containers -->
     <div id="emails-view"></div>
+
     <div id="email-detail-view" style="display: none;"></div>
+
     <div id="compose-view" style="display: none;">
         <h3>New Email</h3>
         <form id="compose-form">
+            <!-- From (disabled field for user reference) -->
             <div class="form-group">
-                <input id="compose-recipients" class="form-control" placeholder="Recipients" />
+                <label for="compose-from">From:</label>
+                <input id="compose-from" class="form-control" value="{{ request.user.email }}" disabled>
             </div>
+
+            <!-- Recipients -->
             <div class="form-group">
-                <input id="compose-subject" class="form-control" placeholder="Subject" />
+                <input id="compose-recipients" class="form-control" placeholder="Recipients">
             </div>
-            <textarea id="compose-body" class="form-control" placeholder="Body"></textarea>
-            <input type="submit" class="btn btn-primary mt-2" />
+
+            <!-- Subject -->
+            <div class="form-group">
+                <input id="compose-subject" class="form-control" placeholder="Subject">
+            </div>
+
+            <!-- Body -->
+            <div class="form-group">
+                <textarea id="compose-body" class="form-control" placeholder="Body"></textarea>
+            </div>
+
+            <!-- Submit -->
+            <input type="submit" class="btn btn-primary mt-2" value="Submit">
         </form>
     </div>
 
-    <div id="emails-view">
-    </div>
-
-    <div id="compose-view">
-        <h3>New Email</h3>
-        <form id="compose-form">
-            <div class="form-group">
-                From: <input disabled class="form-control" value="{{ request.user.email }}">
-            </div>
-            <div class="form-group">
-                To: <input id="compose-recipients" class="form-control">
-            </div>
-            <div class="form-group">
-                <input class="form-control" id="compose-subject" placeholder="Subject">
-            </div>
-            <textarea class="form-control" id="compose-body" placeholder="Body"></textarea>
-            <input type="submit" class="btn btn-primary"/>
-        </form>
-    </div>
 {% endblock %}
 
 {% block script %}
