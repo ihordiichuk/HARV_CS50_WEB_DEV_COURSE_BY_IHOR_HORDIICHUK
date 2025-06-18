@@ -31,6 +31,17 @@ function compose_email() {
     const subject = document.querySelector('#compose-subject').value;
     const body = document.querySelector('#compose-body').value;
 
+    // Validate recipient field before sending
+    if (!recipients.trim()) {
+      alert("Please enter at least one recipient.");
+      return false;
+    }
+
+    if (!recipients.includes('@')) {
+      alert("Recipient must include a valid email address.");
+      return false;
+    }
+
     // Send POST request to API
     fetch('/emails', {
       method: 'POST',
