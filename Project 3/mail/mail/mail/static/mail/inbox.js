@@ -90,6 +90,47 @@ function load_mailbox(mailbox) {
 
         // Fill the preview block with sender, subject, and timestamp
         emailDiv.innerHTML = `
+          <strong>${mailbox === 'sent' ? email.recipients.join(', ') : email.sender}</strong> - ${email.subject}
+          <span style="float: right;">${email.timestamp}</span>`;
+
+        // Add click event to open the full email view
+        emailDiv.addEventListener('click', () => load_email(email.id));
+
+        // Append the preview to the emails-view
+        document.querySelector('#emails-view').appendChild(emailDiv);
+      });
+    });
+}
+
+function load_mailbox(mailbox) {
+
+  // Show the mailbox and hide other views
+  document.querySelector('#emails-view').style.display = 'block';
+  document.querySelector('#email-detail-view').style.display = 'none';
+  document.querySelector('#compose-view').style.display = 'none';
+
+  // Set the mailbox name
+  document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+
+  // Fetch emails from the API for the selected mailbox
+  fetch(`/emails/${mailbox}`)
+    .then(response => response.json())
+    .then(emails => {
+      // Iterate over each email returned by the API
+      emails.forEach(email => {
+        // Create a container for the email.preview
+        const emailDiv = document.createElement('div');
+        emailDiv.className = 'email-item';
+        emailDiv.style.border = '1px solid #ccc';
+        emailDiv.style.padding = '10px';
+        emailDiv.style.marginBottom = '8px';
+        emailDiv.style.cursor = 'pointer';
+
+        // Set background color based on read status
+        emailDiv.style.backgroundColor = email.read ? '#f0f0f0' : 'white';
+
+        // Fill the preview block with sender, subject, and timestamp
+        emailDiv.innerHTML = `
             <strong>${email.sender}</strong> - ${email.subject}
             <span style="float: right;">${email.timestamp}</span>`;
 
