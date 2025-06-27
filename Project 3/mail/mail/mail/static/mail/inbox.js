@@ -53,8 +53,14 @@ function compose_email() {
     })
       .then(response => response.json())
       .then(result => {
-        // Redirect to 'Sent' mailbox on success
-        load_mailbox('sent');
+        if (result.error) {
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'alert alert-danger mt-2';
+          errorDiv.innerText = result.error;
+          document.querySelector('#compose-view').prepend(errorDiv);
+        } else {
+          load_mailbox('sent');
+        }
       });
 
     return false;
